@@ -1,0 +1,27 @@
+/* src/components/Categories.css */
+.categories {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px;
+    background-color: #f8f8f8;
+    white-space: nowrap;
+  }
+  
+  .categories button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .categories button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+  
