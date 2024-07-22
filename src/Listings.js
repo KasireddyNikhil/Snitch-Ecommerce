@@ -1,51 +1,60 @@
 // src/Listings.js
-import React, { useState, useEffect } from "react";
-import ListingCard from "./components/ListingCard";
-import Header from "./components/Header";
-import "./Listings.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
-const Listings = () => {
-  const [listings, setListings] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+function Listings() {
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("https://fakestoreapi.com/products");
-      const data = await response.json();
-      setListings(data);
-    };
-
-    fetchData();
+    axios
+      .get("https://fakestoreapi.com/products")
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
   }, []);
 
-  const filteredListings = listings.filter(
-    (listing) =>
-      (selectedCategory === "All" || listing.category === selectedCategory) &&
-      listing.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <div>
-      <Header
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-      <div className="listings-container">
-        {filteredListings.map((listing) => (
-          <ListingCard
-            key={listing.id}
-            title={listing.title}
-            price={listing.price}
-            image={listing.image}
-            rating={listing.rating.rate}
-          />
+    <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Grid container spacing={2}>
+        {" "}
+        {/* Changed spacing from 3 to 2 */}
+        {products.map((product) => (
+          <Grid item xs={12} sm={6} md={3} key={product.id}>
+            {" "}
+            {/* Changed md from 4 to 3 */}
+            <Card sx={{ maxWidth: "100%" }}>
+              {" "}
+              {/* Removed fixed maxWidth */}
+              <CardMedia
+                component="img"
+                height="250"
+                image={product.image}
+                alt={product.title}
+                sx={{ objectFit: "contain", padding: "10px" }}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h6" component="div">
+                  {product.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.price} USD
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
-};
+}
 
 export default Listings;

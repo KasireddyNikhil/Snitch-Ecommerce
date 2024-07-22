@@ -1,14 +1,12 @@
 // src/App.js
 import React from "react";
+import Navbar from "./Navbar";
 import Listings from "./Listings";
-import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Snitch</h1>
-      </header>
+    <div>
+      <Navbar />
       <Listings />
     </div>
   );
